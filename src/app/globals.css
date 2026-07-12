@@ -1,0 +1,74 @@
+/* Import Tailwind v4 */
+@import "tailwindcss";
+
+@theme {
+  --color-bg-primary: #F7F5F3;
+  --color-bg-dark: #5C3D2E;
+  --color-text-primary: #3B2F2F;
+  --color-text-accent: #C0784A;
+  --color-text-light: #F7F5F3;
+  --color-border-subtle: #E8E4E0;
+  --color-card-bg: #FFFFFF;
+
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+}
+
+:root {
+  --bg-primary: #F7F5F3;
+  --bg-dark: #5C3D2E;
+  --text-primary: #3B2F2F;
+  --text-accent: #C0784A;
+  --text-light: #F7F5F3;
+  --border-subtle: #E8E4E0;
+  --card-bg: #FFFFFF;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Underline grow effect for navigation links */
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 1px;
+  bottom: -4px;
+  left: 0;
+  background-color: var(--text-accent);
+  transform-origin: bottom center;
+  transition: transform 0.3s ease-out;
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
+}
