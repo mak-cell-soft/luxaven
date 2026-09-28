@@ -8,10 +8,13 @@
  * hardcoded in UI components, routes, or metadata.
  */
 
+import type { Locale } from '@/lib/i18n/config';
+
 export interface BrandLocaleStrings {
   title: string;
   tagline: string;
   description: string;
+  craftStatement?: string;
 }
 
 export interface BrandConfig {
@@ -26,8 +29,12 @@ export interface BrandConfig {
   readonly url: string;
   /** Primary contact and inquiry email */
   readonly contactEmail: string;
-  /** Default fallback tagline */
-  readonly tagline: string;
+  /** Primary brand slogan across supported languages */
+  readonly tagline: Record<Locale, string>;
+  /** Secondary atelier / craftsmanship statement */
+  readonly craftStatement: {
+    readonly ar: string;
+  };
   /** Default fallback description */
   readonly description: string;
   /** Atelier physical presence details */
@@ -49,7 +56,7 @@ export interface BrandConfig {
     readonly linkedin: string;
   };
   /** Metadata presets per locale */
-  readonly localized: Record<'fr' | 'en' | 'de' | 'ar', BrandLocaleStrings>;
+  readonly localized: Record<Locale, BrandLocaleStrings>;
 }
 
 export const brandConfig: BrandConfig = {
@@ -60,8 +67,19 @@ export const brandConfig: BrandConfig = {
   url: "https://luxaven.art",
   contactEmail: "contact@luxaven.art",
 
-  // Baseline brand descriptor (preserves current verified site descriptor)
-  tagline: "Sculptures et Mobilier d'Art en Bois",
+  // Primary brand slogan (Where Material Becomes Form)
+  tagline: {
+    en: "Where Material Becomes Form.",
+    fr: "Quand la matière devient forme.",
+    de: "Wo Materie zur Form wird.",
+    ar: "حيث تتحول المادة إلى شكل",
+  },
+
+  // Secondary atelier / craftsmanship statement (Arabic care dimension)
+  craftStatement: {
+    ar: "أشياء صُنعت بعناية",
+  },
+
   description:
     "LUXAVÉN conçoit des objets décoratifs rares et faits main — totems sculpturaux, récipients tournés et mobilier architectural — pour des intérieurs qui valorisent la beauté et la permanence.",
 
@@ -85,30 +103,35 @@ export const brandConfig: BrandConfig = {
 
   localized: {
     fr: {
-      title: "LUXAVÉN — Sculptures et Mobilier d'Art en Bois",
-      tagline: "Sculptures et Mobilier d'Art en Bois",
+      title: "LUXAVÉN — Quand la matière devient forme.",
+      tagline: "Quand la matière devient forme.",
       description:
         "LUXAVÉN conçoit des objets décoratifs rares et faits main — totems sculpturaux, récipients tournés et mobilier architectural — pour des intérieurs qui valorisent la beauté et la permanence.",
     },
     en: {
-      title: "LUXAVÉN — Handcrafted Wooden Sculptures & Fine Art Objects",
-      tagline: "Handcrafted Wooden Sculptures & Fine Art Objects",
+      title: "LUXAVÉN — Where Material Becomes Form.",
+      tagline: "Where Material Becomes Form.",
       description:
         "LUXAVÉN creates rare, handcrafted decorative objects — sculptural totems, turned vessels, and architectural furniture — for interiors that celebrate beauty and permanence.",
     },
     de: {
-      title: "LUXAVÉN — Handgefertigte Holzskulpturen & Kunstobjekte",
-      tagline: "Handgefertigte Holzskulpturen & Kunstobjekte",
+      title: "LUXAVÉN — Wo Materie zur Form wird.",
+      tagline: "Wo Materie zur Form wird.",
       description:
         "LUXAVÉN erschafft seltene, handgefertigte Dekorations- und Kunstobjekte — skulpturale Totems, gedrechselte Gefäße und architektonische Möbel für erlesene Wohnräume.",
     },
     ar: {
-      title: "LUXAVÉN — منحوتات خشبية وتحف فنية يدوية الصنع",
-      tagline: "منحوتات خشبية وتحف فنية يدوية الصنع",
+      title: "LUXAVÉN — حيث تتحول المادة إلى شكل",
+      tagline: "حيث تتحول المادة إلى شكل",
+      craftStatement: "أشياء صُنعت بعناية",
       description:
         "تبتكر لوكْسافين قطعاً فنية وتحفاً ديكورية نادرة مصنوعة يدوياً — مجسمات نحتية، أوانٍ خشبية مخروطة، وأثاث معماري للمساحات الراقية.",
     },
   },
 } as const;
+
+export function getBrandTagline(locale: Locale): string {
+  return brandConfig.tagline[locale] ?? brandConfig.tagline.fr;
+}
 
 export default brandConfig;

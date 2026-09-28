@@ -1,139 +1,315 @@
 'use client';
 
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import { motion } from 'framer-motion';
+import React, { useRef, useState, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import { brandConfig } from '@/lib/brand.config';
+import { IMAGE_SIZES, HERO_SEQUENCE } from '@/lib/images';
+import { cn } from '@/lib/utils';
+import type { Locale } from '@/lib/i18n/config';
+import type { HeroContent } from '@/lib/i18n/types';
 
-export function HeroSection() {
+interface HeroSectionProps {
+  locale?: Locale;
+  dict?: HeroContent;
+}
+
+const SLOGAN_LINES: Record<Locale, [string, string]> = {
+  en: ['Where Material', 'Becomes Form.'],
+  fr: ['Quand la matière', 'devient forme.'],
+  de: ['Wo Materie', 'zur Form wird.'],
+  ar: ['حيث تتحول المادة', 'إلى شكل'],
+};
+
+/**
+ * Editorial Timing Configuration:
+ * - DISPLAY_DURATION_MS: Time each artwork stays prominent before crossfade starts (~7.5s)
+ * - TRANSITION_DURATION_S: Slow, nearly imperceptible film crossfade duration (~1.8s)
+ * - TOTAL_BREATH_DURATION_S: Continuous slow Ken Burns drift duration while on screen (~9.3s)
+ */
+const DISPLAY_DURATION_MS = 7500;
+const TRANSITION_DURATION_S = 1.8;
+const TOTAL_BREATH_DURATION_S = 9.3;
+
+export function HeroSection({ locale = 'fr', dict }: HeroSectionProps) {
+  const containerRef = useRef<HTMLElement>(null);
+  const shouldReduceMotion = useReducedMotion();
+
+  // Sequence state: active base index and incoming crossfade index
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [incomingIndex, setIncomingIndex] = useState<number | null>(null);
+
+  // Progressive preloader: eagerly fetches only the next upcoming slide into browser cache
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const nextIdx = (activeIndex + 1) % HERO_SEQUENCE.length;
+    const img = new window.Image();
+    img.src = HERO_SEQUENCE[nextIdx].src;
+  }, [activeIndex]);
+
+  // Cinematic gallery sequence timer: alternates base and incoming crossfade layers
+  useEffect(() => {
+    // Under reduced motion: sequence is disabled to preserve visual calm
+    if (shouldReduceMotion) return;
+
+    if (incomingIndex === null) {
+      // In steady exhibition state: wait for display duration, then trigger next artwork dissolve
+      const timer = setTimeout(() => {
+        const nextIdx = (activeIndex + 1) % HERO_SEQUENCE.length;
+        setIncomingIndex(nextIdx);
+      }, DISPLAY_DURATION_MS);
+
+      return () => clearTimeout(timer);
+    } else {
+      // During active crossfade: once incoming layer is 100% opaque, commit it as the new base layer
+      const timer = setTimeout(() => {
+        setActiveIndex(incomingIndex);
+        setIncomingIndex(null);
+      }, TRANSITION_DURATION_S * 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [activeIndex, incomingIndex, shouldReduceMotion]);
+
+  // Gentle scroll-driven depth
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end start'],
+  });
+
+  const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
+  const imageY = useTransform(scrollYProgress, [0, 1], ['0%', '6%']);
+  const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '14%']);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
+
+  const content = dict ?? {
+    eyebrow: "L'ATELIER DES OBJETS RARES",
+    titlePrefix: 'Des objets qui',
+    titleHighlight: "portent le temps et l'espace",
+    description:
+      'Créés en Suisse dans des essences nobles de noyer et de chêne massif, façonnés à la main pour capturer le silence et la permanence du bois.',
+    ctaCollection: 'EXPLORER LA COLLECTION',
+    ctaProcess: 'NOTRE PROCÉDÉ',
+    imageCaptionTitle: 'The Cascade Form',
+    imageCaptionMaterial: 'NOYER MASSIF SUISSE',
+    stats: {
+      swissWoodValue: '100%',
+      swissWoodLabel: 'BOIS SUISSE',
+      handCraftedValue: 'Main',
+      handCraftedLabel: 'SCULPTÉ & TOURNÉ',
+      limitedValue: 'Atelier',
+      limitedLabel: 'PIÈCES D’ATELIER',
+    },
+  };
+
+  const [sloganLine1, sloganLine2] = SLOGAN_LINES[locale] ?? SLOGAN_LINES.fr;
+  const fullTagline = brandConfig.tagline[locale] ?? brandConfig.tagline.fr;
+
+  const baseSlide = HERO_SEQUENCE[activeIndex];
+  const incomingSlide = incomingIndex !== null ? HERO_SEQUENCE[incomingIndex] : null;
+
   return (
-    <section className="relative min-h-screen bg-[#F7F5F3] flex items-center pt-28 pb-16 overflow-hidden">
-      {/* Decorative architectural grid lines */}
-      <div className="absolute top-0 right-1/3 w-[1px] h-full bg-[#E8E4E0]/40 hidden lg:block" />
+    <section
+      ref={containerRef}
+      className="relative min-h-[100svh] w-full flex items-end overflow-hidden text-[#FBF9F7]"
+    >
+      {/* Fallback solid background strictly behind image layers */}
+      <div className="absolute inset-0 bg-[#141110] -z-10" />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 w-full relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          
-          {/* Right Column (Image First on Mobile) */}
-          <div className="lg:col-span-5 order-first lg:order-last relative flex justify-center lg:justify-end">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 30 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-              className="relative w-full max-w-[380px] aspect-[3/4]"
-            >
-              {/* Overlapping back decorative offset card (12px offset) */}
-              <div className="absolute inset-0 bg-[#E8E4E0] border border-[#E8E4E0] translate-x-3 translate-y-3 rounded-[16px] -z-10" />
+      {/* Background Cinematic Visual Sequence: Scroll parallax container */}
+      <motion.div
+        style={shouldReduceMotion ? undefined : { scale: imageScale, y: imageY }}
+        className="absolute inset-0 w-full h-full z-0 origin-center overflow-hidden"
+        aria-hidden="true"
+      >
+        {/* Layer 1: Base Slide (Always 100% opaque, zero black flash) */}
+        <motion.div
+          key={baseSlide.id}
+          className="absolute inset-0 w-full h-full z-[1]"
+          initial={false}
+          animate={
+            shouldReduceMotion
+              ? { opacity: 1, scale: 1, y: '0%' }
+              : {
+                  opacity: 1,
+                  scale: baseSlide.targetScale,
+                  y: baseSlide.translateY,
+                }
+          }
+          transition={
+            shouldReduceMotion
+              ? { opacity: { duration: 0.5 } }
+              : {
+                  opacity: { duration: TRANSITION_DURATION_S, ease: [0.22, 1, 0.36, 1] },
+                  scale: { duration: TOTAL_BREATH_DURATION_S, ease: 'easeOut' },
+                  y: { duration: TOTAL_BREATH_DURATION_S, ease: 'easeOut' },
+                }
+          }
+        >
+          <Image
+            src={baseSlide.src}
+            alt={baseSlide.alt}
+            fill
+            priority={activeIndex === 0}
+            sizes={IMAGE_SIZES.hero}
+            className={cn(
+              'object-cover select-none',
+              baseSlide.mobilePositionClass,
+              baseSlide.desktopPositionClass
+            )}
+          />
+        </motion.div>
 
-              {/* Main image card (16px rounded corners, shadow 0 20px 60px) */}
-              <div className="w-full h-full bg-[#E8E4E0]/30 border border-[#E8E4E0] overflow-hidden rounded-[16px] shadow-[0_20px_60px_rgba(0,0,0,0.08)] relative group">
-                <img
-                  src="/images/darilux5.jpeg"
-                  alt={`Sculptures Totems ${brandConfig.name}`}
-                  className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-103"
-                />
-                
-                {/* Caption overlay at bottom */}
-                <div className="absolute bottom-6 left-6 right-6 bg-[#FFFFFF]/90 backdrop-blur-md border border-[#E8E4E0] p-4 rounded-lg shadow-md flex items-center justify-between">
-                  <div>
-                    <span className="block font-display text-sm text-[#3B2F2F] font-medium">Totems N°5 & N°6</span>
-                    <span className="block font-body text-[9px] uppercase tracking-[0.15em] text-[#C0784A] mt-0.5">
-                      BOIS DE FRÊNE HUILÉ
-                    </span>
-                  </div>
-                  <div className="w-8 h-8 rounded-full border border-[#E8E4E0] flex items-center justify-center">
-                    <span className="font-display text-[10px] text-[#3B2F2F]">Ltd.</span>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
+        {/* Layer 2: Incoming Slide (Dissolves over base layer during transition) */}
+        {incomingSlide && (
+          <motion.div
+            key={incomingSlide.id}
+            className="absolute inset-0 w-full h-full z-[2]"
+            initial={
+              shouldReduceMotion
+                ? { opacity: 0, scale: 1, y: '0%' }
+                : {
+                    opacity: 0,
+                    scale: incomingSlide.initialScale,
+                    y: '0%',
+                  }
+            }
+            animate={
+              shouldReduceMotion
+                ? { opacity: 1, scale: 1, y: '0%' }
+                : {
+                    opacity: 1,
+                    scale: incomingSlide.targetScale,
+                    y: incomingSlide.translateY,
+                  }
+            }
+            transition={
+              shouldReduceMotion
+                ? { opacity: { duration: 0.8 } }
+                : {
+                    opacity: { duration: TRANSITION_DURATION_S, ease: [0.22, 1, 0.36, 1] },
+                    scale: { duration: TOTAL_BREATH_DURATION_S, ease: 'easeOut' },
+                    y: { duration: TOTAL_BREATH_DURATION_S, ease: 'easeOut' },
+                  }
+            }
+          >
+            <Image
+              src={incomingSlide.src}
+              alt={incomingSlide.alt}
+              fill
+              sizes={IMAGE_SIZES.hero}
+              className={cn(
+                'object-cover select-none',
+                incomingSlide.mobilePositionClass,
+                incomingSlide.desktopPositionClass
+              )}
+            />
+          </motion.div>
+        )}
+      </motion.div>
 
-          {/* Left Column: Text & Content */}
-          <div className="lg:col-span-7 flex flex-col justify-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="flex items-center gap-3 mb-6"
-            >
-              <span className="eyebrow text-[#C0784A] text-[11px] font-medium tracking-[0.15em]">
-                — L'ATELIER DES OBJETS RARES
-              </span>
-            </motion.div>
+      {/* Directional Luxury Scrim: Preserves authentic timber grain and ambient daylight while maintaining typography readability across all slides */}
+      <div className="absolute inset-0 pointer-events-none z-[3]">
+        {/* Bottom-to-top gradient protecting typography and CTA */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#141110]/85 via-[#141110]/25 to-[#141110]/30" />
 
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="text-4xl sm:text-5xl md:text-[64px] font-display text-[#3B2F2F] leading-[1.1] tracking-tight mb-8"
-            >
-              Des objets qui <br />
-              <span className="italic font-light text-[#C0784A]">portent le temps et l'espace</span>.
-            </motion.h1>
+        {/* Directional lateral scrim: extra contrast behind title and slogan in LTR / RTL */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#141110]/40 via-[#141110]/10 to-transparent rtl:bg-gradient-to-l" />
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="font-body text-sm md:text-base text-[#3B2F2F] max-w-[380px] mb-10 leading-[1.6] font-light"
-            >
-              Créés en Suisse dans des essences nobles de noyer et de chêne massif, façonnés à la main pour capturer le silence et la permanence du bois.
-            </motion.p>
+        {/* Top scrim protecting navbar readability */}
+        <div className="absolute top-0 left-0 right-0 h-28 bg-gradient-to-b from-[#141110]/45 to-transparent" />
 
-            {/* CTA row (Two buttons side by side) */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="flex items-center gap-8 mb-16"
-            >
-              <a
-                href="#collection"
-                className="bg-[#5C3D2E] text-[#F7F5F3] px-8 py-4 font-body text-xs font-medium tracking-[0.15em] uppercase rounded-none hover:bg-[#3B2F2F] hover:translate-y-[-2px] transition-all duration-300 shadow-sm cursor-pointer"
-              >
-                EXPLORER LA COLLECTION
-              </a>
-              <a
-                href="#philosophy"
-                className="group font-body text-[11px] font-medium tracking-[0.15em] text-[#3B2F2F] hover:text-[#C0784A] uppercase relative py-1 cursor-pointer"
-              >
-                NOTRE PROCÉDÉ
-                <span className="absolute bottom-0 left-0 w-full h-[1px] bg-[#3B2F2F] scale-x-100 group-hover:scale-x-0 group-hover:bg-[#C0784A] transition-transform duration-300 origin-left" />
-                <span className="absolute bottom-0 left-0 w-full h-[1px] bg-[#C0784A] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-              </a>
-            </motion.div>
-
-            {/* Stats row (horizontal scroll or 2x2 grid on mobile) */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 0.6 }}
-              className="flex gap-12 overflow-x-auto pb-4 lg:pb-0 scrollbar-none snap-x max-w-lg border-t border-[#E8E4E0] pt-8"
-            >
-              <div className="snap-start shrink-0 min-w-[100px]">
-                <span className="block font-display text-3xl text-[#3B2F2F] font-light">100%</span>
-                <span className="block font-body text-[10px] uppercase tracking-[0.15em] text-[#3B2F2F]/50 mt-1">
-                  BOIS SUISSE
-                </span>
-              </div>
-              <div className="snap-start shrink-0 min-w-[120px]">
-                <span className="block font-display text-3xl text-[#3B2F2F] font-light font-italic italic">Main</span>
-                <span className="block font-body text-[10px] uppercase tracking-[0.15em] text-[#3B2F2F]/50 mt-1">
-                  SCULPTÉ & TOURNÉ
-                </span>
-              </div>
-              <div className="snap-start shrink-0 min-w-[120px]">
-                <span className="block font-display text-3xl text-[#3B2F2F] font-light">Lim.</span>
-                <span className="block font-body text-[10px] uppercase tracking-[0.15em] text-[#3B2F2F]/50 mt-1">
-                  ÉDITIONS LIMITÉES
-                </span>
-              </div>
-            </motion.div>
-          </div>
-
-        </div>
+        {/* Subtle ambient warmth wash unifies tonal temperature */}
+        <div className="absolute inset-0 bg-[#161210]/10 mix-blend-multiply" />
       </div>
+
+      {/* Main Hero Content Composition: Asymmetric, generous negative space — Typography is FIXED and never re-animates */}
+      <motion.div
+        style={shouldReduceMotion ? undefined : { y: contentY, opacity: contentOpacity }}
+        className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 md:px-14 pb-14 sm:pb-18 md:pb-20 pt-32"
+      >
+        <div className="max-w-3xl">
+          {/* Subtle Editorial Eyebrow */}
+          <motion.div
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="flex items-center gap-3 mb-4 sm:mb-6"
+          >
+            <span className="w-6 h-[1px] bg-[#D69D78]/60 inline-block" />
+            <span className="font-body text-[10px] sm:text-[11px] uppercase tracking-[0.24em] text-[#D69D78] font-medium">
+              {content.eyebrow}
+            </span>
+          </motion.div>
+
+          {/* Primary Slogan: The Architectural Focal Point */}
+          <motion.h1
+            aria-label={fullTagline}
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className={
+              locale === 'ar'
+                ? 'font-arabic text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light text-[#FBF9F7] leading-[1.25] tracking-normal mb-4'
+                : 'font-display text-4xl sm:text-6xl md:text-7xl lg:text-[80px] font-normal text-[#FBF9F7] leading-[1.04] tracking-tight mb-4'
+            }
+          >
+            <span className="block">{sloganLine1}</span>
+            <span className="block text-[#FBF9F7]/95 italic font-light font-display">
+              {sloganLine2}
+            </span>
+          </motion.h1>
+
+          {/* Secondary Arabic Craft Statement */}
+          {locale === 'ar' && (
+            <motion.p
+              initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="font-arabic text-sm sm:text-base text-[#D69D78] font-light tracking-wide mb-6"
+            >
+              {brandConfig.craftStatement.ar}
+            </motion.p>
+          )}
+
+          {/* Quiet Editorial CTA Navigation Cue */}
+          <motion.div
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            className="pt-4"
+          >
+            <Link
+              href={`/${locale}/collection`}
+              className="group inline-flex items-center gap-3 font-body text-xs uppercase tracking-[0.2em] text-[#FBF9F7]/90 hover:text-[#D69D78] transition-colors duration-300 py-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#C0784A]"
+            >
+              <span className="border-b border-transparent group-hover:border-[#D69D78]/60 pb-0.5 transition-colors">
+                {content.ctaCollection}
+              </span>
+              <span
+                className="inline-block transition-transform duration-300 group-hover:translate-x-1.5 rtl:group-hover:-translate-x-1.5 rtl:rotate-180"
+                aria-hidden="true"
+              >
+                →
+              </span>
+            </Link>
+          </motion.div>
+
+          {/* Provenance Label: Authentic, localized craft specification truthful across all sequence slides */}
+          <motion.p
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.7 }}
+            className="font-body text-[10px] sm:text-[11px] uppercase tracking-[0.24em] text-[#FBF9F7]/50 mt-10 sm:mt-14 font-light"
+          >
+            {content.stats.handCraftedLabel} <span className="opacity-40 mx-2">·</span> {content.stats.limitedLabel}
+          </motion.p>
+        </div>
+      </motion.div>
     </section>
   );
 }
+
+export default HeroSection;
+

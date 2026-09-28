@@ -20,6 +20,16 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Redirect root path to default locale /fr
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/fr',
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

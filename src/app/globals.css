@@ -10,8 +10,19 @@
   --color-border-subtle: #E8E4E0;
   --color-card-bg: #FFFFFF;
 
-  --font-display: 'Cormorant Garamond', Georgia, serif;
-  --font-body: 'Inter', system-ui, sans-serif;
+  /* Material tokens matching brand essence */
+  --color-walnut: #5C3D2E;
+  --color-cream: #F7F5F3;
+  --color-cream-dark: #EFECE8;
+  --color-terracotta: #C0784A;
+  --color-sand: #E8E4E0;
+  --color-sand-dark: #DCD6D0;
+  --color-espresso: #3B2F2F;
+
+  /* Typography tokens */
+  --font-display: var(--font-display), 'Cormorant Garamond', Georgia, serif;
+  --font-body: var(--font-body), 'Tenor Sans', sans-serif;
+  --font-arabic: var(--font-arabic), 'Readex Pro', sans-serif;
 }
 
 :root {
@@ -22,6 +33,14 @@
   --text-light: #F7F5F3;
   --border-subtle: #E8E4E0;
   --card-bg: #FFFFFF;
+
+  --walnut: #5C3D2E;
+  --cream: #F7F5F3;
+  --cream-dark: #EFECE8;
+  --terracotta: #C0784A;
+  --sand: #E8E4E0;
+  --sand-dark: #DCD6D0;
+  --espresso: #3B2F2F;
 }
 
 html {
@@ -32,7 +51,13 @@ html {
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: var(--font-body), 'Tenor Sans', sans-serif;
+}
+
+/* Arabic typography override when dir="rtl" or lang="ar" */
+html[dir="rtl"] body,
+html[lang="ar"] body {
+  font-family: var(--font-arabic), 'Readex Pro', sans-serif;
 }
 
 /* Animations */
@@ -51,7 +76,7 @@ body {
   animation: fadeInUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-/* Underline grow effect for navigation links */
+/* Underline grow effect for navigation links (supports LTR & RTL) */
 .nav-link {
   position: relative;
 }
@@ -63,7 +88,7 @@ body {
   transform: scaleX(0);
   height: 1px;
   bottom: -4px;
-  left: 0;
+  inset-inline-start: 0;
   background-color: var(--text-accent);
   transform-origin: bottom center;
   transition: transform 0.3s ease-out;

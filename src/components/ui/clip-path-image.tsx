@@ -2,6 +2,8 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
+import { ASSET_PATHS, IMAGE_SIZES } from '@/lib/images';
 
 interface ClippedMediaGalleryProps extends React.ComponentPropsWithoutRef<'section'> {
   mediaItems?: {
@@ -16,20 +18,20 @@ const ClippedMediaGallery = React.forwardRef<HTMLElement, ClippedMediaGalleryPro
   ({ mediaItems, className, ...props }, ref) => {
     const defaultMediaItems = [
       {
-        src: '/images/darilux5.jpeg',
-        alt: 'Turned Totem Columns',
+        src: ASSET_PATHS.products.totemAtelier1.primary,
+        alt: 'Turned Totem Columns — LUXAVÉN',
         clipId: 'clip-squiggle' as const,
         type: 'image' as const,
       },
       {
-        src: '/images/darilux6.jpeg',
-        alt: 'Minimalist Wooden Vases',
+        src: ASSET_PATHS.products.vasesTournesLot7.primary,
+        alt: 'Minimalist Wooden Vases — LUXAVÉN',
         clipId: 'clip-rect' as const,
         type: 'image' as const,
       },
       {
-        src: '/images/darilux8.jpeg',
-        alt: 'Sculptural Spherical Chair',
+        src: ASSET_PATHS.products.chaiseSphaera.primary,
+        alt: 'Sculptural Spherical Chair — LUXAVÉN',
         clipId: 'clip-another' as const,
         type: 'image' as const,
       },
@@ -70,12 +72,14 @@ const ClippedMediaGallery = React.forwardRef<HTMLElement, ClippedMediaGalleryPro
 
         <section ref={ref} className={`grid grid-cols-1 sm:grid-cols-3 gap-8 p-5 ${className || ''}`} {...props}>
           {itemsToRender.map((item, index) => (
-            <figure key={index} className="relative overflow-hidden w-full h-full min-h-[300px] sm:min-h-0" style={{ clipPath: `url(#${item.clipId})` }}>
+            <figure key={index} className="relative overflow-hidden w-full h-full min-h-[300px] sm:min-h-0 aspect-[4/6]" style={{ clipPath: `url(#${item.clipId})` }}>
               {item.type === 'image' ? (
-                <img
+                <Image
                   src={item.src}
                   alt={item.alt}
-                  className='transition-all duration-700 aspect-[4/6] min-h-full align-bottom object-cover hover:scale-110 w-full'
+                  fill
+                  sizes={IMAGE_SIZES.gallery}
+                  className='transition-all duration-700 object-cover hover:scale-110'
                 />
               ) : (
                 <video

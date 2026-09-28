@@ -4,12 +4,32 @@ import React from 'react';
 import ClippedMediaGallery from '@/components/ui/clip-path-image';
 import { motion } from 'framer-motion';
 import { brandConfig } from '@/lib/brand.config';
+import type { Locale } from '@/lib/i18n/config';
+import type { PhilosophyContent } from '@/lib/i18n/types';
 
-export function PhilosophySection() {
+interface PhilosophySectionProps {
+  locale?: Locale;
+  dict?: PhilosophyContent;
+}
+
+export function PhilosophySection({ dict }: PhilosophySectionProps) {
+  const content = dict ?? {
+    eyebrow: 'NOTRE PHILOSOPHIE',
+    titlePrefix: 'Dialogue avec le bois,',
+    titleHighlight: 'forme par forme',
+    paragraph1:
+      `Chaque création de ${brandConfig.name} commence par un tronc brut de noyer ou de chêne issu de forêts locales gérées durablement. Nous n'imposons pas de design prédéfini ; nous écoutons les nœuds, le fil et les failles du bois.`,
+    quote:
+      "Le bois nous indique où couper. Nous suivons simplement le fil jusqu'à ce que la sculpture révèle sa propre gravité.",
+    quoteAuthor: '— MARTA ATELIER, MAÎTRE ARTISAN',
+    paragraph2:
+      "Nos compositions géométriques et nos totems élancés réintroduisent la force tranquille de la nature dans l'espace habitable.",
+  };
+
   return (
     <section id="philosophy" className="py-[120px] bg-[#F7F5F3] border-b border-[#E8E4E0] relative overflow-hidden">
       {/* Soft background shape */}
-      <div className="absolute top-1/4 left-10 w-64 h-64 bg-[#C0784A]/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/4 inset-inline-start-10 w-64 h-64 bg-[#C0784A]/5 rounded-full blur-3xl pointer-events-none" />
       
       <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
         
@@ -22,11 +42,11 @@ export function PhilosophySection() {
             transition={{ duration: 0.8 }}
           >
             <span className="eyebrow text-[#C0784A] mb-4 block text-[11px] font-medium tracking-[0.15em]">
-              NOTRE PHILOSOPHIE
+              {content.eyebrow}
             </span>
             <h2 className="text-4xl md:text-[48px] font-display text-[#3B2F2F] mb-8 leading-[1.1] tracking-tight">
-              Dialogue avec le bois, <br />
-              <span className="italic font-light text-[#C0784A]">forme par forme</span>.
+              {content.titlePrefix} <br />
+              <span className="italic font-light text-[#C0784A]">{content.titleHighlight}</span>.
             </h2>
           </motion.div>
 
@@ -38,21 +58,21 @@ export function PhilosophySection() {
             className="space-y-6"
           >
             <p className="font-body text-sm text-[#3B2F2F] leading-[1.6] font-light">
-              Chaque création de {brandConfig.name} commence par un tronc brut de noyer ou de chêne issu de forêts locales gérées durablement. Nous n'imposons pas de design prédéfini ; nous écoutons les nœuds, le fil et les failles du bois.
+              {content.paragraph1}
             </p>
             
             {/* Pull quote in italic serif */}
-            <blockquote className="border-l-2 border-[#C0784A] pl-6 py-2 my-8">
+            <blockquote className="border-s-2 border-[#C0784A] ps-6 py-2 my-8">
               <p className="font-display italic text-[18px] md:text-[20px] text-[#C0784A] leading-relaxed">
-                "Le bois nous indique où couper. Nous suivons simplement le fil jusqu'à ce que la sculpture révèle sa propre gravité."
+                &ldquo;{content.quote}&rdquo;
               </p>
               <cite className="font-body text-[11px] font-medium uppercase tracking-[0.15em] text-[#3B2F2F]/50 block mt-3 not-italic">
-                — MARTA ATELIER, MAÎTRE ARTISAN
+                {content.quoteAuthor}
               </cite>
             </blockquote>
 
             <p className="font-body text-sm text-[#3B2F2F] leading-[1.6] font-light">
-              Nos compositions géométriques et nos totems élancés réintroduisent la force tranquille de la nature dans l'espace habitable.
+              {content.paragraph2}
             </p>
           </motion.div>
         </div>
