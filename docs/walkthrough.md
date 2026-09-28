@@ -1,6 +1,8 @@
-# Walkthrough: Darilux UI/UX Pro Max Enhancements
+# Walkthrough: UI/UX Pro Max Enhancements
 
-This document summarizes the high-fidelity UI/UX design changes applied to the Darilux website under the **UI/UX Pro Max** guidelines.
+> **Historical Note:** This document records UI/UX enhancements implemented during the initial development cycle under the provisional name DARILUX. The brand identity has officially transitioned to **LUXAVÉN** (`luxaven.art`), with centralized configuration in `src/lib/brand.config.ts`. Existing asset filenames (`darilux*.jpeg`) are intentionally preserved until the scheduled asset migration phase.
+
+This document summarizes the high-fidelity UI/UX design changes applied to the website under the **UI/UX Pro Max** guidelines.
 
 ---
 

@@ -3,6 +3,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
+import { brandConfig } from '@/lib/brand.config';
 
 export function HeroSection() {
   return (
@@ -28,7 +29,7 @@ export function HeroSection() {
               <div className="w-full h-full bg-[#E8E4E0]/30 border border-[#E8E4E0] overflow-hidden rounded-[16px] shadow-[0_20px_60px_rgba(0,0,0,0.08)] relative group">
                 <img
                   src="/images/darilux5.jpeg"
-                  alt="Sculptures Totems Darilux"
+                  alt={`Sculptures Totems ${brandConfig.name}`}
                   className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-103"
                 />
                 

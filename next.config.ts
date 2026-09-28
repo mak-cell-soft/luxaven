@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 import path from "path";
 
-// Darilux Next.js configuration
+// LUXAVÉN Next.js configuration
 const nextConfig: NextConfig = {
   // Silence workspace root Turbopack warning by setting the root explicitly
   turbopack: {

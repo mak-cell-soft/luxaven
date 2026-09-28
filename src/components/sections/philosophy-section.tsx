@@ -3,6 +3,7 @@
 import React from 'react';
 import ClippedMediaGallery from '@/components/ui/clip-path-image';
 import { motion } from 'framer-motion';
+import { brandConfig } from '@/lib/brand.config';
 
 export function PhilosophySection() {
   return (
@@ -37,7 +38,7 @@ export function PhilosophySection() {
             className="space-y-6"
           >
             <p className="font-body text-sm text-[#3B2F2F] leading-[1.6] font-light">
-              Chaque création de Darilux commence par un tronc brut de noyer ou de chêne issu de forêts locales gérées durablement. Nous n'imposons pas de design prédéfini ; nous écoutons les nœuds, le fil et les failles du bois.
+              Chaque création de {brandConfig.name} commence par un tronc brut de noyer ou de chêne issu de forêts locales gérées durablement. Nous n'imposons pas de design prédéfini ; nous écoutons les nœuds, le fil et les failles du bois.
             </p>
             
             {/* Pull quote in italic serif */}

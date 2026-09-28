@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { brandConfig } from "@/lib/brand.config";
 
-// Root layout for the Darilux website
+// Root layout for LUXAVÉN website
 // Loads Cormorant Garamond (display/luxury) + Inter (body/clean) via Google Fonts
 
 export const metadata: Metadata = {
-  title: "Darilux — Sculptures et Mobilier d'Art en Bois",
-  description:
-    "Darilux conçoit des objets décoratifs rares et faits main — totems sculpturaux, récipients tournés et mobilier architectural — pour des intérieurs qui valorisent la beauté et la permanence.",
+  metadataBase: new URL(brandConfig.url),
+  title: `${brandConfig.name} — ${brandConfig.tagline}`,
+  description: brandConfig.description,
   keywords: [
     "objets décoratifs de luxe",
     "mobilier sculptural",
@@ -17,8 +18,10 @@ export const metadata: Metadata = {
     "mobilier d'art",
   ],
   openGraph: {
-    title: "Darilux — Sculptures et Mobilier d'Art en Bois",
+    title: `${brandConfig.name} — ${brandConfig.tagline}`,
     description: "Des objets qui portent le temps et l'espace.",
+    url: brandConfig.url,
+    siteName: brandConfig.name,
     type: "website",
   },
 };

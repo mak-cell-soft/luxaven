@@ -9,7 +9,7 @@ This project uses a multi-layered approach to state management to balance perfor
 
 ## 2. Global UI State (Zustand)
 - **Tool**: `zustand` + `persist`
-- **Use for**: State that must be accessed by many components (e.g., Auth status, Theme, Shopping Cart).
+- **Use for**: State that must be accessed by many components (e.g., Active Locale, Gallery/Lightbox selection, Concierge Modal).
 - **Location**: `src/store/`
 - **Persistence**: Pre-configured to save state in `localStorage`.
 

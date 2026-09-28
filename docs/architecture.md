@@ -10,7 +10,12 @@ This project follows a modern **Server-First Architecture** utilizing the Next.j
   - `shared/`: Reusable cross-feature components.
 - **Services (`src/services`)**: Server Actions and business logic.
 - **Store (`src/store`)**: Client-side state management (Zustand).
-- **Lib (`src/lib`)**: Shared utilities, constants, and third-party configurations.
+- **Lib (`src/lib`)**: Shared utilities, constants, third-party configurations, and the centralized Brand Configuration (`brand.config.ts` — single source of truth for LUXAVÉN).
+
+## Brand & Content Architecture
+- **Public Brand:** LUXAVÉN (`brandConfig.name`).
+- **Brand Abstraction:** Never hardcode the public brand name in UI components or routes; always import from `src/lib/brand.config.ts`.
+- **Planned Work:** Asset migration and multilingual App Router routing (`/[locale]`) are scheduled for future phases.
 
 ## Rules
 

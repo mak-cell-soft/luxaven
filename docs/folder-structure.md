@@ -13,6 +13,7 @@ src/
 │   └── ui/            # Shadcn UI primitives
 ├── hooks/             # Custom React hooks
 ├── lib/               # Shared utilities and configs
+│   ├── brand.config.ts # Single source of truth for LUXAVÉN brand identity
 │   ├── safe-action.ts # Next-Safe-Action client
 │   └── utils.ts       # CN utility for Tailwind classes
 ├── services/          # Server Actions and API logic

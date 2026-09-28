@@ -7,6 +7,8 @@
 - ✅ **Do** use `kebab-case` for file/folder names (except React components).
 - ✅ **Do** use `PascalCase` for React components.
 - ✅ **Do** add `'use client'` explicitly to components that use hooks or browser events.
+- ✅ **Do** import public brand identity from `@/lib/brand.config` (`brandConfig`).
+- ❌ **Don't** hardcode the public brand name (`LUXAVÉN` or deprecated `DARILUX`) in UI strings or templates.
 
 ## Component Structure
 ```tsx

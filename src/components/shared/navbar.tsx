@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Menu, X } from 'lucide-react';
+import { brandConfig } from '@/lib/brand.config';
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -30,7 +31,7 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
         {/* Brand wordmark */}
         <a href="#" className="font-display text-xl tracking-[0.2em] text-[#3B2F2F] font-semibold uppercase">
-          DARILUX
+          {brandConfig.name}
         </a>
 
         {/* Center: Navigation Links */}
