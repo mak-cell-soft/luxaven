@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ARTWORKS, getLocalizedArtwork } from '@/data/products';
 import { getArtworkAlt } from '@/lib/images';
+import { LuxuryShowcase } from './luxury-showcase';
 import type { Locale } from '@/lib/i18n/config';
 import type { CollectionContent } from '@/lib/i18n/types';
 
@@ -671,7 +672,13 @@ export function CollectionSection({ locale = 'fr', dict }: CollectionSectionProp
         )}
 
         {/* ========================================================= */}
-        {/* 7. ARCHIVE EXPLORATION LINK — ATELIER INVITATION          */}
+        {/* 7. HANDCRAFTED LUXURY SHOWCASE — THE ARTISTRY OF WOOD     */}
+        {/* Curated salon of 11 master studio sculptures             */}
+        {/* ========================================================= */}
+        <LuxuryShowcase locale={locale} dict={content.luxuryShowcase} />
+
+        {/* ========================================================= */}
+        {/* 8. ARCHIVE EXPLORATION LINK — ATELIER INVITATION          */}
         {/* ========================================================= */}
         <motion.div
           {...revealProps(0.1)}

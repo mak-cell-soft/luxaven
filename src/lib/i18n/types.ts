@@ -56,6 +56,25 @@ export interface CollectionContent {
   readonly priceOnRequest: string;
   readonly inquire: string;
   readonly dimensionsLabel: string;
+  readonly luxuryShowcase?: LuxuryShowcaseContent;
+}
+
+export interface LuxuryShowcaseContent {
+  readonly eyebrow: string;
+  readonly title: string;
+  readonly subtitle: string;
+  readonly inquireCta: string;
+  readonly viewPlaque: string;
+  readonly dimensionsLabel: string;
+  readonly materialLabel: string;
+  readonly seriesBadge: string;
+  readonly filters: {
+    readonly all: string;
+    readonly pedestal: string;
+    readonly vase: string;
+    readonly column: string;
+    readonly organic: string;
+  };
 }
 
 export interface FeaturedContent {

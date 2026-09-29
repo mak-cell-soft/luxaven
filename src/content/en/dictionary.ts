@@ -57,6 +57,24 @@ export const enDictionary: Dictionary = {
     priceOnRequest: 'Price on request',
     inquire: 'INQUIRE',
     dimensionsLabel: 'Dimensions',
+    luxuryShowcase: {
+      eyebrow: 'EXCLUSIVE SERIES · STUDIO CABINET',
+      title: 'The Artistry of Wood',
+      subtitle:
+        'Eleven sculptural studies turned and carved by hand in our Swiss ateliers. Each artwork explores the dynamic tension between pure architectural geometry and living wood grain.',
+      inquireCta: 'Request a Private Viewing',
+      viewPlaque: 'Studio Plaque',
+      dimensionsLabel: 'Proportions',
+      materialLabel: 'Species & Finish',
+      seriesBadge: 'Artisan Edition',
+      filters: {
+        all: 'All Pieces (11)',
+        pedestal: 'Pedestals (3)',
+        vase: 'Sculptural Vases (2)',
+        column: 'Columns & Spires (4)',
+        organic: 'Organic Forms (2)',
+      },
+    },
   },
   featured: {
     eyebrow: 'MASTERPIECE',

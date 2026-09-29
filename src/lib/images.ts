@@ -67,6 +67,19 @@ export const ASSET_PATHS = {
     ovalPedestal: '/images/collections/collection-oval-pedestal.jpeg',
     spiralVase: '/images/collections/collection-spiral-vase.jpeg',
   },
+  handmadeLuxury: {
+    flutedPedestal: '/images/handmade/luxury/handluxury1.jpeg',
+    cascadeForm: '/images/handmade/luxury/handluxury2.jpeg',
+    naturalResidence: '/images/handmade/luxury/handluxury3.jpeg',
+    texturedVase: '/images/handmade/luxury/handluxury4.jpeg',
+    majesticSpindle: '/images/handmade/luxury/handluxury5.jpeg',
+    geometricPedestal: '/images/handmade/luxury/handluxury6.jpeg',
+    ornateTower: '/images/handmade/luxury/handluxury7.jpeg',
+    twistedColumn: '/images/handmade/luxury/handluxury8.jpeg',
+    handcraftedExcellence: '/images/handmade/luxury/handluxury9.jpeg',
+    ovalPedestal: '/images/handmade/luxury/handluxury10.jpeg',
+    spiralVase: '/images/handmade/luxury/handluxury11.jpeg',
+  },
 } as const;
 
 /**

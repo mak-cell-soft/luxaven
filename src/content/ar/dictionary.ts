@@ -57,6 +57,24 @@ export const arDictionary: Dictionary = {
     priceOnRequest: 'السعر عند الطلب',
     inquire: 'استفسار خاص',
     dimensionsLabel: 'الأبعاد',
+    luxuryShowcase: {
+      eyebrow: 'مجموعة استثنائية · خزانة الورشة الفنية',
+      title: 'The Artistry of Wood',
+      subtitle:
+        'أحد عشر عملاً نحتياً تم تشكيلها بالمخرطة والإزميل اليدوي في ورشاتنا السويسرية. يستكشف كل عمل الحوار البصري بين الهندسة المعمارية والنبض الحي لألياف الخشب.',
+      inquireCta: 'طلب معاينة خاصة',
+      viewPlaque: 'لوحة التوثيق الفنية',
+      dimensionsLabel: 'التناسبات',
+      materialLabel: 'الخامة والمعالجة',
+      seriesBadge: 'إصدار حرفي محدود',
+      filters: {
+        all: 'جميع المنحوتات (11)',
+        pedestal: 'قواعد نحتية (3)',
+        vase: 'مزهريات فنية (2)',
+        column: 'أعمدة ومغازل (4)',
+        organic: 'تكوينات عضوية (2)',
+      },
+    },
   },
   featured: {
     eyebrow: 'القطعة الاستثنائية',

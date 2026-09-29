@@ -24,13 +24,15 @@ const SLOGAN_LINES: Record<Locale, [string, string]> = {
 
 /**
  * Editorial Timing Configuration:
- * - DISPLAY_DURATION_MS: Time each artwork stays prominent before crossfade starts (~7.5s)
- * - TRANSITION_DURATION_S: Slow, nearly imperceptible film crossfade duration (~1.8s)
- * - TOTAL_BREATH_DURATION_S: Continuous slow Ken Burns drift duration while on screen (~9.3s)
+ * - DISPLAY_DURATION_MS: Time each artwork stays prominent before crossfade starts (~3.6s)
+ * - TRANSITION_DURATION_S: Slow, nearly imperceptible film crossfade duration (~1.4s)
+ * - TOTAL_BREATH_DURATION_S: Continuous slow Ken Burns drift duration while on screen (5.0s)
+ *
+ * Exact 5.0s cycle: 3600ms display + 1400ms crossfade = 5000ms between transitions.
  */
-const DISPLAY_DURATION_MS = 7500;
-const TRANSITION_DURATION_S = 1.8;
-const TOTAL_BREATH_DURATION_S = 9.3;
+const DISPLAY_DURATION_MS = 3600;
+const TRANSITION_DURATION_S = 1.4;
+const TOTAL_BREATH_DURATION_S = 5.0;
 
 export function HeroSection({ locale = 'fr', dict }: HeroSectionProps) {
   const containerRef = useRef<HTMLElement>(null);

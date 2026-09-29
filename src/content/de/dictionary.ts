@@ -57,6 +57,24 @@ export const deDictionary: Dictionary = {
     priceOnRequest: 'Preis auf Anfrage',
     inquire: 'ANFRAGEN',
     dimensionsLabel: 'Maße',
+    luxuryShowcase: {
+      eyebrow: 'EXKLUSIVE SERIE · ATELIERKABINETT',
+      title: 'The Artistry of Wood',
+      subtitle:
+        'Elf skulpturale Studien, von Hand gedrechselt und geschnitzt in unseren Schweizer Werkstätten. Jedes Werk erforscht das Zusammenspiel architektonischer Geometrie und lebendiger Holzmaserung.',
+      inquireCta: 'Private Vorführung anfragen',
+      viewPlaque: 'Atelierplakette',
+      dimensionsLabel: 'Proportionen',
+      materialLabel: 'Holzart & Veredelung',
+      seriesBadge: 'Meisteredition',
+      filters: {
+        all: 'Alle Werke (11)',
+        pedestal: 'Sockel (3)',
+        vase: 'Skulpturale Vasen (2)',
+        column: 'Säulen & Stelen (4)',
+        organic: 'Organische Formen (2)',
+      },
+    },
   },
   featured: {
     eyebrow: 'MEISTERWERK',

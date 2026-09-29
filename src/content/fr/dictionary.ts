@@ -57,6 +57,24 @@ export const frDictionary: Dictionary = {
     priceOnRequest: 'Tarif sur demande',
     inquire: "S'INFORMER",
     dimensionsLabel: 'Dimensions',
+    luxuryShowcase: {
+      eyebrow: "SÉRIE D'EXCEPTION · CABINET D'ATELIER",
+      title: 'The Artistry of Wood',
+      subtitle:
+        'Onze études sculpturales façonnées au tour et à la gouge dans nos ateliers suisses. Chaque pièce explore la tension entre géométrie architecturale et grain vivant du bois.',
+      inquireCta: 'Demander une Présentation Privée',
+      viewPlaque: "Plaque d'Atelier",
+      dimensionsLabel: 'Proportions',
+      materialLabel: 'Essence & Finition',
+      seriesBadge: "Édition d'Artisan",
+      filters: {
+        all: 'Toutes les pièces (11)',
+        pedestal: 'Piédestaux (3)',
+        vase: 'Vases Sculpturaux (2)',
+        column: 'Colonnes & Flèches (4)',
+        organic: 'Formes Organiques (2)',
+      },
+    },
   },
   featured: {
     eyebrow: 'ŒUVRE MAÎTRESSE',
