@@ -21,6 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       for (const loc of LOCALES) {
         languages[loc] = `${brandConfig.url}/${loc}${route}`;
       }
+      languages['x-default'] = `${brandConfig.url}/fr${route}`;
 
       entries.push({
         url: `${brandConfig.url}/${locale}${route}`,
@@ -42,6 +43,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       for (const loc of LOCALES) {
         languages[loc] = `${brandConfig.url}/${loc}${route}`;
       }
+      languages['x-default'] = `${brandConfig.url}/fr${route}`;
 
       entries.push({
         url: `${brandConfig.url}/${locale}${route}`,

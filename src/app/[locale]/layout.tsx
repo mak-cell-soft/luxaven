@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { notFound } from 'next/navigation';
 import '../globals.css';
 import { LOCALES } from '@/lib/i18n/config';
@@ -6,6 +6,11 @@ import { isLocale, getDirection } from '@/lib/i18n/locale';
 import { getFontVariables } from '@/lib/fonts';
 import { generatePageMetadata } from '@/lib/seo/metadata';
 import { OrganizationJsonLd } from '@/components/seo/json-ld';
+
+export const viewport: Viewport = {
+  themeColor: '#141110',
+  colorScheme: 'light dark',
+};
 
 interface LocaleLayoutProps {
   children: React.ReactNode;

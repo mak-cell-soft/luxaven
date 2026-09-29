@@ -361,7 +361,7 @@ export function LuxuryShowcase({ locale = 'fr', dict }: LuxuryShowcaseProps) {
           ref={thumbnailStripRef}
           className="flex gap-3 sm:gap-4 overflow-x-auto pb-4 pt-1 scrollbar-none snap-x focus-visible:outline-none"
         >
-          {filteredPieces.map((piece, index) => {
+          {filteredPieces.map((piece) => {
             const isCurrent = piece.slug === activePiece.slug;
             return (
               <button
